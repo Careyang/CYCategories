@@ -28,22 +28,28 @@ extension UIButton {
         }
     }
 
-    public func setUI(title: String? = nil, titleColor: UIColor, font: UIFont, bgColor: UIColor? = nil, bgImage: UIImage? = nil, borderWidth: CGFloat? = nil, borderColor: UIColor? = nil, cornerRadius: CGFloat = 0) {
+    public func setUI(title: String? = nil, titleColor: UIColor, font: UIFont, bgColor: UIColor? = nil, bgImage: UIImage? = nil) {
         setTitle(title, for: .normal)
         setTitleColor(titleColor, for: .normal)
         titleLabel?.font = font
         setBackgroundImage(bgImage, for: .normal)
         backgroundColor = bgColor
-        if let bw = borderWidth {
-            layer.borderWidth = bw
-        }
-        if let bc = borderColor {
-            layer.borderColor = bc.cgColor
-        }
-        layer.cornerRadius = cornerRadius
         layer.masksToBounds = true
     }
 
+    public func setBoarder(borderWidth: CGFloat?, borderColor: UIColor?, cornerRadius: CGFloat?) {
+        // 打开光栅化，减少GPU负担
+        layer.shouldRasterize = true
+        layer.rasterizationScale = UIScreen.main.scale
+        layer.masksToBounds = true
+        if let bw = borderWidth {
+            layer.borderWidth = bw
+        }
+        if let cr = cornerRadius {
+            layer.borderWidth = cr
+        }
+        layer.borderColor = borderColor?.cgColor
+    }
     public func hidden(_ isHidden: Bool) -> UIButton {
         self.isHidden = isHidden
         return self
@@ -52,5 +58,42 @@ extension UIButton {
     public func enable(_ isEnable: Bool) -> UIButton {
         self.isEnabled = isEnable
         return self
+    }
+}
+
+typealias ButtonAction = (UIButton) -> Void
+
+extension UIButton {
+    private struct AssociatedKeys {
+        static var actionKey = UnsafeRawPointer.init(bitPattern: "actionKey".hashValue)
+    }
+
+    @objc dynamic var action: ButtonAction? {
+        get {
+            if let action = objc_getAssociatedObject(self, &AssociatedKeys.actionKey) as? ButtonAction {
+                return action
+            }
+            return nil
+        }
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.actionKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
+        }
+    }
+    /// 添加一个点击事件
+    /// - Parameter action: 点击时执行的闭包
+    @discardableResult // 消除未使用返回值时的警告
+    func addClickAction(action: @escaping ButtonAction) -> UIButton {
+        return self.addEvent(event: .touchUpInside, action: action)
+    }
+    @discardableResult // 消除未使用返回值时的警告
+    func addEvent(event: UIControl.Event, action:@escaping  ButtonAction ) -> UIButton {
+        self.action = action
+        self.addTarget(self, action: #selector(buttonEventAction), for: event)
+        return self
+    }
+    @objc func buttonEventAction(button: UIButton) {
+        if let action = self.action {
+            action(button)
+        }
     }
 }
