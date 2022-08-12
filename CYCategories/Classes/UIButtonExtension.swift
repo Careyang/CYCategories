@@ -61,7 +61,7 @@ extension UIButton {
     }
 }
 
-typealias ButtonAction = (UIButton) -> Void
+public typealias ButtonAction = (UIButton) -> Void
 
 extension UIButton {
     private struct AssociatedKeys {
@@ -82,11 +82,11 @@ extension UIButton {
     /// 添加一个点击事件
     /// - Parameter action: 点击时执行的闭包
     @discardableResult // 消除未使用返回值时的警告
-    func addClickAction(action: @escaping ButtonAction) -> UIButton {
+    public func addClickAction(action: @escaping ButtonAction) -> UIButton {
         return self.addEvent(event: .touchUpInside, action: action)
     }
     @discardableResult // 消除未使用返回值时的警告
-    func addEvent(event: UIControl.Event, action:@escaping  ButtonAction ) -> UIButton {
+    public func addEvent(event: UIControl.Event, action:@escaping  ButtonAction ) -> UIButton {
         self.action = action
         self.addTarget(self, action: #selector(buttonEventAction), for: event)
         return self
