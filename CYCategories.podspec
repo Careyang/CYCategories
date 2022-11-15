@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CYCategories'
-  s.version          = '0.5.1'
+  s.version          = '0.5.2'
   s.summary          = '开发常用的扩展'
 
 # This description is used to generate tags and improve search results.

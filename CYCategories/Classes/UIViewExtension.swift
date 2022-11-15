@@ -13,7 +13,7 @@ extension UIView {
     /// - Parameters:
     ///   - corner: 圆角位置 [.topLeft, .topRight]
     ///   - cornerRadii: 圆角大小
-    func setCorner(corner: UIRectCorner, cornerRadii: CGSize = CGSize(width: 4, height: 4)) {
+    public func setCorner(corner: UIRectCorner, cornerRadii: CGSize = CGSize(width: 4, height: 4)) {
         let bezier = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corner, cornerRadii: cornerRadii)
         let shapeLayer = CAShapeLayer()
         shapeLayer.frame = self.bounds

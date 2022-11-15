@@ -46,7 +46,7 @@ extension UIButton {
             layer.borderWidth = bw
         }
         if let cr = cornerRadius {
-            layer.borderWidth = cr
+            layer.cornerRadius = cr
         }
         layer.borderColor = borderColor?.cgColor
     }

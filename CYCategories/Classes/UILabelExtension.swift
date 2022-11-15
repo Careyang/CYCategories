@@ -14,7 +14,7 @@ extension UILabel {
         self.init(text: text, font: UIFont.systemFont(ofSize: size, weight: weight), color: color, alignment: alignment)
     }
 
-    public convenience init(text: String? = nil, font: UIFont, color: UIColor? = nil, alignment: NSTextAlignment = .left) {
+    public convenience init(text: String? = nil, font: UIFont? = nil, color: UIColor? = nil, alignment: NSTextAlignment = .left) {
         self.init(frame: .zero)
         self.text = text
         self.font = font
@@ -29,7 +29,7 @@ extension UILabel {
         self.attributedText = attr
     }
 
-    public func setUI(text: String? = nil, color: UIColor, font: UIFont, alignment: NSTextAlignment = .left) {
+    public func setUI(text: String? = nil, color: UIColor, font: UIFont? = nil, alignment: NSTextAlignment = .left) {
         self.text = text
         self.font = font
         self.textColor = color
